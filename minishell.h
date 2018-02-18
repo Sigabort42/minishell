@@ -9,11 +9,11 @@
 typedef struct	s_builtin
 {
 	char	*name;
-	void	(*f)(char **, char **);
+	void	(*f)(char **, char **, int);
 }		t_builtin;
 
-void	ft_chdir(char **str_s, char **env);
-void	ft_env(char **str_s, char **env);
-void	ft_setenv(char **str_s, char **env);
+void	ft_chdir(char **str_s, char **env, int verif_env);
+void	ft_env(char **str_s, char **env, int verif_env);
+void	ft_setenv(char **str_s, char **env, int verif_env);
 
 #endif

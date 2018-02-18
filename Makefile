@@ -2,7 +2,7 @@ NAME	=	minishell
 
 CC	=	gcc
 
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror #-g3 -fsanitize=address
 
 SRCS	=	main.c \
 
@@ -14,7 +14,7 @@ all:		$(NAME)
 
 $(NAME):	$(OBJS)
 	@make -C libft/
-	@$(CC) $(OBJS) $(LIB) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -o $(NAME)
 
 clean:
 	@make -C libft/ clean

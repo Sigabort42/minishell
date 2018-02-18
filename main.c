@@ -1,24 +1,35 @@
 #include "minishell.h"
 
-void			ft_setenv(char **str_s, char **env)
+void			ft_setenv(char **str_s, char **env, int verif_env)
 {
 	int		i;
 	char		**str;
 
 	i = 0;
-	str = ft_strsplit(env[i], '=');
-	while (ft_strcmp(str_s[1], str[0]))
-		str = ft_strsplit(env[++i], '=');
-	ft_strcpy(env[i], str[0]);
-	ft_strcat(env[i], "=");
-	ft_strcat(env[i], str_s[2]);
+	if (env[0] && verif_env)
+	{
+		str = ft_strsplit(env[i], '=');
+		while (env[i] && ft_strcmp(str_s[1], str[0]))
+			str = ft_strsplit(env[i++], '=');
+		ft_strcpy(env[i], str[0]);
+		ft_strcat(env[i], "=");
+		ft_strcat(env[i], str_s[2]);
+	}
+	else
+	{
+		(!ft_strcmp(str_s[1], "PWD")) ? i++ : 0;
+		env[i] = ft_strdup(str_s[1]);
+		env[i] = ft_strjoin_free(env[i], ft_strdup("="));
+		env[i] = ft_strjoin_free(env[i], ft_strdup(str_s[2]));
+	}
 }
 
-void			ft_env(char **str_s, char **env)
+void			ft_env(char **str_s, char **env, int verif_env)
 {
 	int		i;
-	(void)str_s;
 
+	(void)str_s;
+	(void)verif_env;
 	if (!env[0])
 		return ;
 	i = 0;
@@ -26,38 +37,36 @@ void			ft_env(char **str_s, char **env)
 		ft_putendl(env[i++]);
 }
 
-void			ft_chdir(char **str_s, char **env)
+void			ft_chdir(char **str_s, char **env, int verif_env)
 {
 	char		*tmp;
 	char		*tmp_old;
 
-	tmp = 0;
-	tmp_old = 0;
+	(void)verif_env;
+	tmp = ft_strnew(100);
+	tmp_old = (env[0]) ? ft_strdup(&env[7][4]) : 0;
 	if ((!str_s[1] || !ft_strcmp(str_s[1], "--")) && env[0])
-	{
-		tmp_old = &env[7][4];
-		tmp = ft_strdup(&env[14][5]);
 		chdir(&env[14][5]);
-	}
 	else if (str_s[1] && !ft_strcmp(str_s[1], "-") && env[0])
-	{
-		tmp_old = &env[7][4];
-		tmp = ft_strdup(&env[22][7]);
 		chdir(&env[22][7]);
-	}
+	else if (env[0])
+		chdir(str_s[1]);
 	else
 	{
-		tmp_old = &env[7][4];
-		tmp = ft_strdup(str_s[1]);
-		chdir(str_s[1]);
+		getcwd(tmp, 100);
+		chdir(tmp);
+		tmp_old = ft_strdup(tmp);
+		env = (char **)malloc(sizeof(char*) * 2);
 	}
+	getcwd(tmp, 100);
 	str_s[1] = "OLDPWD";
 	str_s[2] = tmp_old;
-	ft_setenv(str_s, env);
+	ft_setenv(str_s, env, verif_env);
 	str_s[1] = "PWD";
 	str_s[2] = tmp;
-	ft_setenv(str_s, env);
+	ft_setenv(str_s, env, verif_env);
 	free(tmp);
+	free(tmp_old);
 }
 
 t_builtin		*ft_init_build()
@@ -83,12 +92,18 @@ int			main(int argc, char **argv, char **env)
 	char		**str_s;
 	char		**path;
 	t_builtin	*build;
+	int		verif_env;
 
 	build = ft_init_build();
+	ouloulou = -1;
+	verif_env = 0;
 	if (argc < 2)
 		(void)argv;
 	if (env[0])
+	{
+		verif_env = 1;
 		path = ft_strsplit(env[11], ':');
+	}
 	while (42)
 	{
 		if (env[0])
@@ -99,17 +114,24 @@ int			main(int argc, char **argv, char **env)
 		{
 			i = 0;
 			str_s = ft_strsplit(cmd, ' ');
-			while (build[i].name && ft_strcmp(build[i].name, str_s[0]))
+			while (str_s[0] && build[i].name && ft_strcmp(build[i].name, str_s[0]))
 				i++;
-			if (build[i].name)
+			if (!str_s[0])
+				continue;
+			if (build[i].name && str_s[0])
 			{
-				build[i].f(str_s, env);
+				build[i].f(str_s, env, verif_env);
 				continue;
 			}
 			i = 0;
-			cmd = ft_strjoin(&path[i][4], "/");
-			cmd = ft_strjoin_free(cmd, ft_strdup(str_s[0]));
-			while (path[i] && (access(cmd, F_OK) == -1))
+			if (env[0])
+			{
+				cmd = ft_strjoin(&path[i][4], "/");
+				cmd = ft_strjoin_free(cmd, ft_strdup(str_s[0]));
+			}
+			else
+				cmd = ft_strdup(str_s[0]);
+			while (env[0] && path[i] && (access(cmd, F_OK) == -1))
 			{
 				free(cmd);
 				cmd = ft_strjoin(&path[++i][0], "/");
@@ -118,7 +140,10 @@ int			main(int argc, char **argv, char **env)
 			if (!access(cmd, F_OK))
 				ouloulou = fork();
 			else
+			{
 				ft_printf("minishell:{fd}2  command not found: {red}%s{eoc}\n", str_s[0]);
+				continue;
+			}
 			if (ouloulou > 0)
 			{
 				wait(0);
@@ -127,7 +152,7 @@ int			main(int argc, char **argv, char **env)
 				while (str_s[i])
 					free(str_s[i++]);
 			}
-			else
+			else if (ouloulou == 0)
 			{
 				if (!env[0])
 					execve(str_s[0], str_s, env);
