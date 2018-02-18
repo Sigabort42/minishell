@@ -30,7 +30,7 @@ int		main(int argc, char **argv, char **env)
 			if (!access(cmd, F_OK))
 				ouloulou = fork();
 			else
-				ft_printf("{red}%s{eoc}:{fd}2  command not found\n", str_s[0]);
+				ft_printf("minishell:{fd}2  command not found: {red}%s{eoc}\n", str_s[0]);
 			if (ouloulou > 0)
 			{
 				wait(0);
