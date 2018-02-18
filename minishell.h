@@ -6,4 +6,14 @@
 # include <sys/stat.h>
 # include "./libft/libft.h"
 
+typedef struct	s_builtin
+{
+	char	*name;
+	void	(*f)(char **, char **);
+}		t_builtin;
+
+void	ft_chdir(char **str_s, char **env);
+void	ft_env(char **str_s, char **env);
+void	ft_setenv(char **str_s, char **env);
+
 #endif
