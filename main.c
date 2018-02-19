@@ -10,7 +10,7 @@ void			ft_setenv(char **str_s, char **env, int verif_env)
 	{
 		str = ft_strsplit(env[i], '=');
 		while (env[i] && ft_strcmp(str_s[1], str[0]))
-			str = ft_strsplit(env[i++], '=');
+			str = ft_strsplit(env[++i], '=');
 		ft_strcpy(env[i], str[0]);
 		ft_strcat(env[i], "=");
 		ft_strcat(env[i], str_s[2]);
@@ -93,7 +93,9 @@ int			main(int argc, char **argv, char **env)
 	char		**path;
 	t_builtin	*build;
 	int		verif_env;
+	char		*pwd_shell;
 
+	pwd_shell = ft_strnew(80);
 	build = ft_init_build();
 	ouloulou = -1;
 	verif_env = 0;
@@ -101,7 +103,13 @@ int			main(int argc, char **argv, char **env)
 		(void)argv;
 	if (env[0])
 	{
+		str_s = (char**)malloc(sizeof(char*) * 3);
 		verif_env = 1;
+		getcwd(pwd_shell, 80);
+		ft_strcat(pwd_shell, "/");
+		ft_strcat(pwd_shell, "minishell");
+		ft_strcpy(env[8], "SHELL=");
+		ft_strcat(env[8], pwd_shell);
 		path = ft_strsplit(env[11], ':');
 	}
 	while (42)
