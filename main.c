@@ -1,5 +1,13 @@
 #include "minishell.h"
 
+void			ft_exit(char **str_s, char **env, int verif_env)
+{
+	(void)str_s;
+	(void)env;
+	(void)verif_env;
+	exit(EXIT_SUCCESS);
+}
+
 void			ft_setenv(char **str_s, char **env, int verif_env)
 {
 	int		i;
@@ -41,6 +49,7 @@ void			ft_chdir(char **str_s, char **env, int verif_env)
 {
 	char		*tmp;
 	char		*tmp_old;
+	char		*relative;
 
 	(void)verif_env;
 	tmp = ft_strnew(100);
@@ -50,7 +59,15 @@ void			ft_chdir(char **str_s, char **env, int verif_env)
 	else if (str_s[1] && !ft_strcmp(str_s[1], "-") && env[0])
 		chdir(&env[22][7]);
 	else if (env[0])
+	{
+		if (str_s[1][0] == '~')
+		{
+			relative = ft_strdup(ft_strrchr(str_s[1], '/'));
+			str_s[1] = ft_strdup(&env[14][5]);
+			str_s[1] = ft_strjoin_free(str_s[1], relative);
+		}
 		chdir(str_s[1]);
+	}
 	else
 	{
 		getcwd(tmp, 100);
@@ -73,14 +90,16 @@ t_builtin		*ft_init_build()
 {
 	t_builtin	*builtin;
 
-	builtin = (t_builtin*)malloc(sizeof(t_builtin) * 4);
+	builtin = (t_builtin*)malloc(sizeof(t_builtin) * 5);
 	builtin[0].name = ft_strdup("cd");
 	builtin[0].f = &ft_chdir;
 	builtin[1].name = ft_strdup("env");
 	builtin[1].f = &ft_env;
 	builtin[2].name = ft_strdup("setenv");
 	builtin[2].f = &ft_setenv;
-	builtin[3].name = 0;
+	builtin[3].name = ft_strdup("exit");
+	builtin[3].f = &ft_exit;
+	builtin[4].name = 0;
 	return (builtin);
 }
 
