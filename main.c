@@ -50,23 +50,38 @@ void			ft_chdir(char **str_s, char **env, int verif_env)
 	char		*tmp;
 	char		*tmp_old;
 	char		*relative;
+	char		*verif;
+	char		*verif2;
 
 	(void)verif_env;
 	tmp = ft_strnew(100);
+	verif2 = ft_strnew(100);
 	tmp_old = (env[0]) ? ft_strdup(&env[7][4]) : 0;
-	if ((!str_s[1] || !ft_strcmp(str_s[1], "--")) && env[0])
-		chdir(&env[14][5]);
+	if ((!str_s[1] || !ft_strcmp(str_s[1], "--") || !ft_strcmp(str_s[1], "~")) && env[0])
+	{
+		chdir(&env[15][5]);
+			
+	}
 	else if (str_s[1] && !ft_strcmp(str_s[1], "-") && env[0])
-		chdir(&env[22][7]);
+	{
+		verif = ft_strdup(&env[23][7]);
+		while (chdir(verif) == -1)
+		{
+			verif2 = ft_strrchr(verif, '/');
+			verif2[0] = 0;
+		}
+	}
 	else if (env[0])
 	{
 		if (str_s[1][0] == '~')
-		{
+ 		{
 			relative = ft_strdup(ft_strrchr(str_s[1], '/'));
-			str_s[1] = ft_strdup(&env[14][5]);
+			str_s[1] = ft_strdup(&env[15][5]);
 			str_s[1] = ft_strjoin_free(str_s[1], relative);
 		}
-		chdir(str_s[1]);
+		getcwd(tmp, 100);
+		if (!chdir(str_s[1]) && !getcwd(verif2, 100))
+			chdir(str_s[1]);
 	}
 	else
 	{
@@ -124,12 +139,12 @@ int			main(int argc, char **argv, char **env)
 	{
 		str_s = (char**)malloc(sizeof(char*) * 3);
 		verif_env = 1;
-		getcwd(pwd_shell, 80);
+/*		getcwd(pwd_shell, 80);
 		ft_strcat(pwd_shell, "/");
 		ft_strcat(pwd_shell, "minishell");
 		ft_strcpy(env[8], "SHELL=");
 		ft_strcat(env[8], pwd_shell);
-		path = ft_strsplit(env[11], ':');
+*/		path = ft_strsplit(env[11], ':');
 	}
 	while (42)
 	{
