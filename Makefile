@@ -14,9 +14,11 @@ NAME	=	minishell
 
 CC	=	gcc
 
-CFLAGS	=	-Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g3 #-fsanitize=address
 
-SRCS	=	main.c \
+SRCS	=	ft_set_unset_env.c \
+		ft_utils.c \
+		main.c
 
 OBJS	=	$(SRCS:.c=.o)
 

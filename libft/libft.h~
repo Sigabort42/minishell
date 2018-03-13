@@ -95,5 +95,5 @@ t_list				*ft_lstpushparams(int argc, char **argv);
 char				*ft_strcdup(char *s1, int c);
 char				*ft_strjoin_free(char *s1, char *s2);
 int				get_next_line(int fd, char **line);
-char				*ft_split(char *str, char c);
+
 #endif

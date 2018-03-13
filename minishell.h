@@ -24,18 +24,26 @@ typedef struct			s_env
 	char				**str_s;
 	char				**path;
 	char				*cmd;
+	int				flags_env;
 	struct s_builtin	*builtin;
 }						t_env;
 
 typedef struct			s_builtin
 {
 	char				*name;
-	void				(*f)(char **, t_env *, int);
+	void				(*f)(t_env *);
 }						t_builtin;
 
-void					ft_chdir(char **str_s, t_env *env, int verif_env);
-void					ft_env(char **str_s, t_env *env, int verif_env);
-void					ft_setenv(char **str_s, t_env *env, int verif_env);
-void					ft_exit(char **str_s, t_env *env, int verif_env);
+void					ft_chdir(t_env *env);
+void					ft_env(t_env *env);
+void					ft_setenv(t_env *env);
+void					ft_exit(t_env *env);
+void					ft_unsetenv(t_env *env);
+void					ft_free_env_tab(char **env_tmp);
+int					ft_search_env(t_env *env, char *av);
+int					ft_verif_builtin(t_env *env);
+int					ft_count_line_env(t_env *env);
+char					*ft_split(char *str, char c);
+char					**ft_copy_env(char **env, int i);
 
 #endif

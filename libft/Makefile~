@@ -86,7 +86,6 @@ SRCS			=	ft_strlen.c \
 				ft_strcdup.c \
 				ft_strjoin_free.c \
 				get_next_line.c \
-				ft_split.c \
 
 OBJ			=	$(SRCS:.c=.o)
 
