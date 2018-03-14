@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_set_unset_env.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/14 16:51:23 by elbenkri          #+#    #+#             */
+/*   Updated: 2018/03/14 17:42:18 by elbenkri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char		**ft_copy_env(char **env, int i)
@@ -54,7 +66,7 @@ void		ft_setenv(t_env *env)
 	}
 	else if (!env->flags_env)
 		ft_add_elem_env(env, 0, 0);
-	env->builtin[1].f(env);
+//	env->builtin[1].f(env);
 }
 
 static void	ft_delete_elem_env(t_env *env, int i, char **env_tmp)
@@ -74,6 +86,8 @@ static void	ft_delete_elem_env(t_env *env, int i, char **env_tmp)
 				i++;
 		}
 		env->env[j] = 0;
+		if (!i)
+			env->flags_env = 0;
 	}
 }
 

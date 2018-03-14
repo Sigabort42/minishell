@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_utils.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/14 16:51:31 by elbenkri          #+#    #+#             */
+/*   Updated: 2018/03/14 16:51:32 by elbenkri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int			ft_count_line_env(t_env *env)
@@ -51,6 +63,7 @@ int			ft_verif_builtin(t_env *env)
 	int		i;
 
 	i = 0;
+	free(env->cmd);
 	while (env->str_s[0] && env->builtin[i].name &&
 		ft_strcmp(env->builtin[i].name, env->str_s[0]))
 		i++;
@@ -59,7 +72,6 @@ int			ft_verif_builtin(t_env *env)
 	if (env->builtin[i].name && env->str_s[0])
 	{
 		env->builtin[i].f(env);
-		free(env->cmd);
 		ft_free_env_tab(env->str_s);
 		return (1);
 	}

@@ -6,17 +6,11 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 15:54:34 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/03/12 18:02:45 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/03/14 16:57:20 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void            ft_chdir(t_env *env)
-{
-	(void)env;
-}
-
 
 void		ft_exit(t_env *env)
 {
@@ -55,7 +49,7 @@ void		ft_init_builtin(t_env *env)
 {
 	env->builtin = (t_builtin*)malloc(sizeof(t_builtin) * 6);
 	env->builtin[0].name = ft_strdup("cd");
-	env->builtin[0].f = &ft_chdir;
+	env->builtin[0].f = &ft_cd;
 	env->builtin[1].name = ft_strdup("env");
 	env->builtin[1].f = &ft_env;
 	env->builtin[2].name = ft_strdup("setenv");
@@ -67,20 +61,73 @@ void		ft_init_builtin(t_env *env)
 	env->builtin[5].name = 0;
 }
 
+
+int			ft_exec_cmd(t_env *env)
+{
+	pid_t	pid;
+
+	if (!access(env->cmd, F_OK))
+		pid = fork();
+	else
+	{
+		ft_printf("minishell:{fd}2  command not found: {red}%s{eoc}\n", env->str_s[0]);
+		free(env->cmd);
+		ft_free_env_tab(env->str_s);
+		return (1);
+	}
+	if (pid > 0)
+	{
+		wait(0);
+		free(env->cmd);
+		ft_free_env_tab(env->str_s);
+	}
+	else if (!pid)
+	{
+		if (!env->flags_env)
+			execve(env->str_s[0], env->str_s, env->env);
+		else
+			execve(env->cmd, env->str_s, env->env);
+	}
+	return (0);
+
+}
+
+void		ft_search_cmd(t_env *env)
+{
+	int		i;
+
+	i = 0;
+	if (env->flags_env)
+	{
+		env->cmd = ft_strjoin(env->path[i], "/");
+		env->cmd = ft_strjoin_free(env->cmd, ft_strdup(env->str_s[0]));
+	}
+	else
+		env->cmd = ft_strdup(env->str_s[0]);
+	while (env->flags_env && env->path[i] && (access(env->cmd, F_OK) == -1))
+	{
+		free(env->cmd);
+		env->cmd = ft_strjoin(env->path[++i], "/");
+		env->cmd = ft_strjoin_free(env->cmd, ft_strdup(env->str_s[0]));
+	}
+	ft_exec_cmd(env);
+}
+
 void		ft_run(t_env *env)
 {
 	while (42)
 	{
-		if (env->flags_env)
-			ft_printf("{cyan}Sigabort42{eoc} {magenta}%s{eoc} {green}$>{eoc}",
+		if (env->flags_env && ft_search_env(env, "PWD") != -1)
+			ft_printf("{cyan}Sigabort42{eoc} {fd}1  {magenta}%s{eoc} {green}$>{eoc}",
 			ft_strrchr(env->env[ft_search_env(env, "PWD")], '/') + 1);
 		else
-			ft_printf("{cyan}Sigabort42{eoc}%c{green}$>{eoc}", ' ');
+			ft_printf("{cyan}Sigabort42{eoc}%c{fd}1  {green}$>{eoc}", ' ');
 		if (get_next_line(0, &env->cmd) > 0)
 		{
 			env->str_s = ft_strsplit(env->cmd, ' ');
 			if (ft_verif_builtin(env))
 				continue;
+			ft_search_cmd(env);
 		}
  	}
 }
