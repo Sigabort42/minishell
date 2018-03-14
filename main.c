@@ -113,6 +113,21 @@ void		ft_search_cmd(t_env *env)
 	ft_exec_cmd(env);
 }
 
+void		ft_verif_env(t_env *env)
+{
+	if (env->flags_env && ft_search_env(env, "PATH") != -1)
+	{
+		ft_free_env_tab(env->path);
+		env->path = ft_strsplit(&env->env[ft_search_env(env, "PATH")][5], ':');
+	}
+	else if (ft_search_env(env, "PATH") == -1)
+	{
+		ft_free_env_tab(env->path);
+		env->path = (char**)malloc(sizeof(char*));
+		env->path[0] = 0;
+	}
+}
+
 void		ft_run(t_env *env)
 {
 	while (42)
@@ -125,6 +140,7 @@ void		ft_run(t_env *env)
 		if (get_next_line(0, &env->cmd) > 0)
 		{
 			env->str_s = ft_strsplit(env->cmd, ' ');
+			ft_verif_env(env);
 			if (ft_verif_builtin(env))
 				continue;
 			ft_search_cmd(env);
