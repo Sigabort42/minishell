@@ -6,16 +6,16 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 16:51:10 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/03/14 18:00:07 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/03/15 18:31:13 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		ft_cd2(t_env *env)
+void			ft_cd2(t_env *env)
 {
-	char	*path_no_env;
-	char	*old_pwd;
+	char		*path_no_env;
+	char		*old_pwd;
 
 	path_no_env = ft_strnew(100);
 	if (env->flags_env && ft_search_env(env, "PWD") != -1)
@@ -46,34 +46,59 @@ void		ft_cd2(t_env *env)
 	free(path_no_env);
 }
 
+void			ft_exec_cd(char *path)
+{
+	struct stat	s;
+
+	if (chdir(path) == -1)
+	{
+		if (access(path, F_OK))
+			ft_printf("cd: {fd}2 no such file or directory: {red}%s{eoc}\n", path);
+		else if (!stat(path, &s) && !S_ISDIR(s.st_mode))
+			ft_printf("cd: {fd}2 not a directory: {red}%s{eoc}\n", path);
+		else if (access(path, X_OK))
+			ft_printf("cd: {fd}2 permission denied: {red}%s{eoc}\n", path);
+	}
+}
+
+void			ft_relative_or_absolute(t_env *env)
+{
+	char		*relative;
+
+	if (env->str_s[1][0] == '~' && ft_search_env(env, "HOME") != -1)
+	{
+		relative = ft_strdup(ft_strrchr(env->str_s[1], '/'));
+		free(env->str_s[1]);
+		env->str_s[1] = ft_strdup(&env->env[ft_search_env(env, "HOME")][5]);
+		env->str_s[1] = ft_strjoin_free(env->str_s[1], relative);
+		ft_exec_cd(env->str_s[1]);
+	}
+	else
+		ft_exec_cd(env->str_s[1]);
+}
+
 void		ft_cd(t_env *env)
 {
 	char	*verif;
-	char	*relative;
+	char	*verif2;
 
 	if (env->flags_env)
 	{
 		if ((!env->str_s[1] || !ft_strcmp(env->str_s[1], "--") ||
 		!ft_strcmp(env->str_s[1], "~")) && ft_search_env(env, "HOME") != -1)
-			chdir(&(env)->env[ft_search_env(env, "HOME")][5]);
-		else if (env->str_s[1] && !ft_strcmp(env->str_s[1], "-"))
+			ft_exec_cd(&(env)->env[ft_search_env(env, "HOME")][5]);
+		else if (env->str_s[1] && !ft_strcmp(env->str_s[1], "-") &&
+		ft_search_env(env, "OLDPWD") != -1)
 		{
-			while (chdir(&(env)->env[ft_search_env(env, "OLDPWD")][7]) == -1)
+			verif = &env->env[ft_search_env(env, "OLDPWD")][7];
+			while (chdir(verif) == -1)
 			{
-				verif = ft_strrchr(verif, '/');
-				verif[0] = 0;
+				verif2 = ft_strrchr(verif, '/');
+				verif2[0] = 0;
 	 		}
  		}
-		else if (env->str_s[1][0] == '~' && ft_search_env(env, "HOME") != -1)
-		{
-			relative = ft_strdup(ft_strrchr(env->str_s[1], '/'));
-			free(env->str_s[1]);
-			env->str_s[1] = ft_strdup(&env->env[ft_search_env(env, "HOME")][5]);
-			env->str_s[1] = ft_strjoin_free(env->str_s[1], relative);
-			chdir(env->str_s[1]);
-		}
-		else if (!chdir(env->str_s[1]))
-			chdir(env->str_s[1]);
+		else
+			ft_relative_or_absolute(env);			
 	}
 	ft_cd2(env);
 }
