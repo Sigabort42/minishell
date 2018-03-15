@@ -6,7 +6,7 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 16:51:23 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/03/14 17:42:18 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/03/15 19:41:29 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,14 @@ static void	ft_add_elem_env(t_env *env, int i, char **env_tmp)
 		env->env[i] = ft_strdup(env_tmp[i]);
 		i++;
 	}
-	env->env[i] = ft_strjoin(env->str_s[1], "=");
-	env->env[i] = ft_strjoin_free(env->env[i], ft_strdup(env->str_s[2]));
-	env->env[++i] = 0;
-	if (!env->flags_env)
-		env->flags_env = 1;
+	if (env->str_s[2])
+	{
+		env->env[i] = ft_strjoin(env->str_s[1], "=");
+		env->env[i] = ft_strjoin_free(env->env[i], ft_strdup(env->str_s[2]));
+		env->env[++i] = 0;
+		if (!env->flags_env)
+			env->flags_env = 1;
+	}
 }
 
 void		ft_setenv(t_env *env)
@@ -66,7 +69,6 @@ void		ft_setenv(t_env *env)
 	}
 	else if (!env->flags_env)
 		ft_add_elem_env(env, 0, 0);
-//	env->builtin[1].f(env);
 }
 
 static void	ft_delete_elem_env(t_env *env, int i, char **env_tmp)
