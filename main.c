@@ -116,8 +116,15 @@ void		ft_verif_env(t_env *env)
 	}
 }
 
+void		ft_signal(int sig)
+{
+	if (sig == SIGINT)
+		printf("receveid SIGINT\n\n");
+}
+
 void		ft_run(t_env *env)
 {
+
 	while (42)
 	{
 		if (env->flags_env && ft_search_env(env, "PWD") != -1)
@@ -127,6 +134,8 @@ void		ft_run(t_env *env)
 			ft_printf("{cyan}Sigabort42{eoc}%c{fd}1  {green}$>{eoc}", ' ');
 		if (get_next_line(0, &env->cmd) > 0)
 		{
+			if (signal(SIGINT, ft_signal) == SIG_ERR)
+				printf("lolololol\n\n");
 			env->str_s = ft_strsplit(env->cmd, ' ');
 			ft_verif_env(env);
 			if (ft_verif_builtin(env))

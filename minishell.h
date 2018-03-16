@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <sys/stat.h>
+#include <signal.h>
 # include "./libft/libft.h"
 
 typedef struct			s_env
