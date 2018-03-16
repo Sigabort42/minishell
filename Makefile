@@ -19,6 +19,7 @@ CFLAGS	=	-Wall -Wextra -Werror -g3 #-fsanitize=address
 SRCS	=	ft_set_unset_env.c \
 			ft_utils.c \
 			ft_cd.c \
+			ft_echo_env_exit.c \
 			main.c
 
 OBJS	=	$(SRCS:.c=.o)

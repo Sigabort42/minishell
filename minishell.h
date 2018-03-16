@@ -39,6 +39,7 @@ void					ft_env(t_env *env);
 void					ft_setenv(t_env *env);
 void					ft_exit(t_env *env);
 void					ft_unsetenv(t_env *env);
+void					ft_echo(t_env *env);
 void					ft_free_env_tab(char **env_tmp);
 int						ft_search_env(t_env *env, char *av);
 int						ft_verif_builtin(t_env *env);

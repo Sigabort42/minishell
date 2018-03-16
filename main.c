@@ -12,23 +12,6 @@
 
 #include "minishell.h"
 
-void		ft_exit(t_env *env)
-{
-	(void)env;
-	exit(EXIT_SUCCESS);
-}
-
-void		ft_env(t_env *env)
-{
-	int		i;
-
-	if (!env->flags_env)
-		return ;
-	i = 0;
-	while (env->env[i])
-		ft_putendl(env->env[i++]);
-}
-
 void		ft_init_env(char **envp, t_env *env)
 {
 	int		i;
@@ -47,7 +30,7 @@ void		ft_init_env(char **envp, t_env *env)
 
 void		ft_init_builtin(t_env *env)
 {
-	env->builtin = (t_builtin*)malloc(sizeof(t_builtin) * 6);
+	env->builtin = (t_builtin*)malloc(sizeof(t_builtin) * 7);
 	env->builtin[0].name = ft_strdup("cd");
 	env->builtin[0].f = &ft_cd;
 	env->builtin[1].name = ft_strdup("env");
@@ -58,7 +41,9 @@ void		ft_init_builtin(t_env *env)
 	env->builtin[3].f = &ft_exit;
 	env->builtin[4].name = ft_strdup("unsetenv");
 	env->builtin[4].f = &ft_unsetenv;
-	env->builtin[5].name = 0;
+	env->builtin[5].name = ft_strdup("echo");
+	env->builtin[5].f = &ft_echo;
+	env->builtin[6].name = 0;
 }
 
 
