@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+char		*g_pwd;
+
 void		ft_init_env(char **envp, t_env *env)
 {
 	int		i;
@@ -51,7 +53,7 @@ int			ft_exec_cmd(t_env *env)
 {
 	pid_t	pid;
 
-	if (!access(env->cmd, F_OK))
+	if (!access(env->cmd, X_OK))
 		pid = fork();
 	else
 	{
@@ -119,23 +121,28 @@ void		ft_verif_env(t_env *env)
 void		ft_signal(int sig)
 {
 	if (sig == SIGINT)
-		printf("receveid SIGINT\n\n");
+	{
+		ft_putstr("\n");
+		ft_printf("{cyan}Sigabort42{eoc} {fd}1  {magenta}%s{eoc} {green}$>{eoc}",
+			  g_pwd);
+	}
 }
 
 void		ft_run(t_env *env)
 {
-
+	if (signal(SIGINT, ft_signal) == SIG_ERR)
+		;
+	g_pwd = ft_strdup(" ");
 	while (42)
 	{
+		free(g_pwd);
 		if (env->flags_env && ft_search_env(env, "PWD") != -1)
 			ft_printf("{cyan}Sigabort42{eoc} {fd}1  {magenta}%s{eoc} {green}$>{eoc}",
-			ft_strrchr(env->env[ft_search_env(env, "PWD")], '/') + 1);
+				  g_pwd = ft_strdup(ft_strrchr(env->env[ft_search_env(env, "PWD")], '/') + 1));
 		else
-			ft_printf("{cyan}Sigabort42{eoc}%c{fd}1  {green}$>{eoc}", ' ');
+			ft_printf("{cyan}Sigabort42{eoc}%s{fd}1  {green}$>{eoc}", g_pwd = ft_strdup(" "));
 		if (get_next_line(0, &env->cmd) > 0)
 		{
-			if (signal(SIGINT, ft_signal) == SIG_ERR)
-				printf("lolololol\n\n");
 			env->str_s = ft_strsplit(env->cmd, ' ');
 			ft_verif_env(env);
 			if (ft_verif_builtin(env))
