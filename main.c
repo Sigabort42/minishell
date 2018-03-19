@@ -136,7 +136,7 @@ void		ft_prompt(t_env *env)
 		if (!ft_strrchr(env->env[ft_search_env(env, "PWD")], '/'))
 			g_pwd = ft_strdup(" ");
 		else
-			g_pwd = ft_strdup(ft_strrchr(env->env[ft_search_env(env, "PWD")], '/'));
+			g_pwd = ft_strdup(ft_strrchr(env->env[ft_search_env(env, "PWD")], '/') + 1);
 		ft_printf("{cyan}Sigabort42{eoc} {fd}1  {magenta}%s{eoc} {green}$>{eoc}",
 		g_pwd);
 	}
