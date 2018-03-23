@@ -6,7 +6,7 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 16:51:10 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/03/15 18:31:13 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/03/23 01:43:24 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void			ft_exec_cd(char *path)
 	if (chdir(path) == -1)
 	{
 		if (access(path, F_OK))
-			ft_printf("cd: {fd}2 no such file or directory: {red}%s{eoc}\n", path);
+			ft_printf("cd: {fd}2 no such file or directory: {red}%s{eoc}\n",
+			path);
 		else if (!stat(path, &s) && !S_ISDIR(s.st_mode))
 			ft_printf("cd: {fd}2 not a directory: {red}%s{eoc}\n", path);
 		else if (access(path, X_OK))
@@ -41,6 +42,19 @@ void			ft_relative_or_absolute(t_env *env)
 	}
 	else
 		ft_exec_cd(env->str_s[1]);
+}
+
+void			ft_cd3(t_env *env, char *path_no_env, char *old_pwd)
+{
+	ft_free_env_tab(env->str_s);
+	env->str_s = (char **)malloc(sizeof(char*) * 4);
+	env->str_s[0] = ft_strdup("cd");
+	env->str_s[1] = ft_strdup("PWD");
+	env->str_s[2] = ft_strdup(path_no_env);
+	env->str_s[3] = 0;
+	ft_setenv(env);
+	free(old_pwd);
+	free(path_no_env);
 }
 
 void			ft_cd2(t_env *env)
@@ -66,21 +80,13 @@ void			ft_cd2(t_env *env)
 	env->str_s[2] = ft_strdup(old_pwd);
 	env->str_s[3] = 0;
 	ft_setenv(env);
-	ft_free_env_tab(env->str_s);
-	env->str_s = (char **)malloc(sizeof(char*) * 4);
-	env->str_s[0] = ft_strdup("cd");
-	env->str_s[1] = ft_strdup("PWD");
-	env->str_s[2] = ft_strdup(path_no_env);
-	env->str_s[3] = 0;
-	ft_setenv(env);
-	free(old_pwd);
-	free(path_no_env);
+	ft_cd3(env, path_no_env, old_pwd);
 }
 
-void		ft_cd(t_env *env)
+void			ft_cd(t_env *env)
 {
-	char	*verif;
-	char	*verif2;
+	char		*verif;
+	char		*verif2;
 
 	if (env->flags_env)
 	{
@@ -94,13 +100,13 @@ void		ft_cd(t_env *env)
 			while (chdir(verif) == -1)
 			{
 				if (!ft_strrchr(verif, '/'))
-					break;
+					break ;
 				verif2 = ft_strrchr(verif, '/');
 				verif2[0] = 0;
-	 		}
- 		}
+			}
+		}
 		else
-			ft_relative_or_absolute(env);			
+			ft_relative_or_absolute(env);
 	}
 	ft_cd2(env);
 }

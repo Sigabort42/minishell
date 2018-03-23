@@ -6,15 +6,15 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 16:51:31 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/03/14 16:51:32 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/03/23 01:46:38 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			ft_count_line_env(t_env *env)
+int				ft_count_line_env(t_env *env)
 {
-	int		i;
+	int			i;
 
 	i = 0;
 	while (env->env[i])
@@ -24,7 +24,7 @@ int			ft_count_line_env(t_env *env)
 
 void			ft_free_env_tab(char **env_tmp)
 {
-	int		i;
+	int			i;
 
 	i = 0;
 	while (env_tmp[i])
@@ -32,9 +32,9 @@ void			ft_free_env_tab(char **env_tmp)
 	free(env_tmp);
 }
 
-int			ft_search_env(t_env *env, char *av)
+int				ft_search_env(t_env *env, char *av)
 {
-	int		i;
+	int			i;
 	char		*env_tmp;
 
 	if (!env->flags_env || !env->env[0])
@@ -58,9 +58,9 @@ int			ft_search_env(t_env *env, char *av)
 	return (-1);
 }
 
-int			ft_verif_builtin(t_env *env)
+int				ft_verif_builtin(t_env *env)
 {
-	int		i;
+	int			i;
 
 	i = 0;
 	free(env->cmd);

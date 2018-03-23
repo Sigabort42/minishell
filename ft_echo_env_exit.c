@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_echo_env_exit.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/23 01:43:48 by elbenkri          #+#    #+#             */
+/*   Updated: 2018/03/23 01:44:09 by elbenkri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void		ft_exit(t_env *env)
@@ -8,7 +20,7 @@ void		ft_exit(t_env *env)
 
 void		ft_env(t_env *env)
 {
-	int	i;
+	int		i;
 
 	if (!env->flags_env)
 		return ;
@@ -17,7 +29,7 @@ void		ft_env(t_env *env)
 		ft_putendl(env->env[i++]);
 }
 
-int		ft_verif_echo(t_env *env, int *flags_d, int *flags_c)
+int			ft_verif_echo(t_env *env, int *flags_d, int *flags_c)
 {
 	if (env->str_s[1] && env->str_s[1][0] == '"')
 	{
@@ -34,10 +46,10 @@ int		ft_verif_echo(t_env *env, int *flags_d, int *flags_c)
 
 void		ft_echo(t_env *env)
 {
-	int	i;
-	int	j;
-	int	flags_d;
-	int	flags_c;
+	int		i;
+	int		j;
+	int		flags_d;
+	int		flags_c;
 
 	i = 1;
 	j = 0;

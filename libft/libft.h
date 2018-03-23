@@ -6,7 +6,7 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 16:28:58 by elbenkri          #+#    #+#             */
-/*   Updated: 2017/12/04 15:19:45 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/03/23 02:26:06 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,6 @@ t_list				*ft_lstlast(t_list *lst);
 t_list				*ft_lstpushparams(int argc, char **argv);
 char				*ft_strcdup(char *s1, int c);
 char				*ft_strjoin_free(char *s1, char *s2);
-int				get_next_line(int fd, char **line);
+int					get_next_line(int fd, char **line);
 char				*ft_split(char *str, char c);
 #endif

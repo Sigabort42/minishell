@@ -6,7 +6,7 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 16:51:23 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/03/15 19:41:29 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/03/23 01:45:40 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char		**ft_copy_env(char **env, int i)
 {
-	char    **env_tmp;
+	char	**env_tmp;
 
 	env_tmp = (char**)malloc(sizeof(char*) * (i + 1));
 	i = -1;
@@ -23,7 +23,6 @@ char		**ft_copy_env(char **env, int i)
 	env_tmp[i] = 0;
 	return (env_tmp);
 }
-
 
 static void	ft_add_elem_env(t_env *env, int i, char **env_tmp)
 {
@@ -46,8 +45,8 @@ static void	ft_add_elem_env(t_env *env, int i, char **env_tmp)
 
 void		ft_setenv(t_env *env)
 {
-	int     i;
-	char    **env_tmp;
+	int		i;
+	char	**env_tmp;
 
 	if (env->flags_env && env->str_s[2])
 	{
@@ -95,14 +94,14 @@ static void	ft_delete_elem_env(t_env *env, int i, char **env_tmp)
 
 void		ft_unsetenv(t_env *env)
 {
-	int     i;
-	char    **env_tmp;
+	int		i;
+	char	**env_tmp;
 
 	if ((i = ft_search_env(env, env->str_s[1])) != -1)
 	{
 		i = ft_count_line_env(env);
 		env_tmp = ft_copy_env(env->env, i);
-	 	ft_free_env_tab(env->env);
+		ft_free_env_tab(env->env);
 		ft_delete_elem_env(env, i, env_tmp);
 		ft_free_env_tab(env_tmp);
 	}

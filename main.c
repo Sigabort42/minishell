@@ -6,102 +6,13 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 15:54:34 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/03/15 19:49:03 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/03/23 02:11:51 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 char		*g_pwd;
-
-void		ft_init_env(char **envp, t_env *env)
-{
-	int		i;
-	
-	i = 0;
-	env->flags_env = 1;
-	while (envp[i])
-		i++;
-	env->env = (char**)malloc(sizeof(char*) * (i + 1));
-	i = -1;
-	while (envp[++i])
-		env->env[i] = ft_strdup(envp[i]);
-	env->env[i] = 0;
-	env->path = ft_strsplit(&envp[ft_search_env(env, "PATH")][5], ':');
-}
-
-void		ft_init_builtin(t_env *env)
-{
-	env->builtin = (t_builtin*)malloc(sizeof(t_builtin) * 7);
-	env->builtin[0].name = ft_strdup("cd");
-	env->builtin[0].f = &ft_cd;
-	env->builtin[1].name = ft_strdup("env");
-	env->builtin[1].f = &ft_env;
-	env->builtin[2].name = ft_strdup("setenv");
-	env->builtin[2].f = &ft_setenv;
-	env->builtin[3].name = ft_strdup("exit");
-	env->builtin[3].f = &ft_exit;
-	env->builtin[4].name = ft_strdup("unsetenv");
-	env->builtin[4].f = &ft_unsetenv;
-	env->builtin[5].name = ft_strdup("echo");
-	env->builtin[5].f = &ft_echo;
-	env->builtin[6].name = 0;
-}
-
-
-int			ft_exec_cmd(t_env *env)
-{
-	pid_t	pid;
-
-	if (!access(env->cmd, X_OK))
-		pid = fork();
-	else
-	{
-		ft_printf("minishell:{fd}2  command not found: {red}%s{eoc}\n", env->str_s[0]);
-		free(env->cmd);
-		ft_free_env_tab(env->str_s);
-		return (1);
-	}
-	if (pid > 0)
-	{
-		wait(0);
-		free(env->cmd);
-		ft_free_env_tab(env->str_s);
-	}
-	else if (!pid)
-	{
-		if (!env->flags_env)
-			execve(env->str_s[0], env->str_s, env->env);
-		else
-			execve(env->cmd, env->str_s, env->env);
-	}
-	return (0);
-
-}
-
-void		ft_search_cmd(t_env *env)
-{
-	int		i;
-
-	i = 0;
-	if (env->flags_env)
-	{
-		env->cmd = ft_strjoin(env->path[i], "/");
-		env->cmd = ft_strjoin_free(env->cmd, ft_strdup(env->str_s[0]));
-	}
-	else
-	{
-		env->env = 0;
-		env->cmd = ft_strdup(env->str_s[0]);
-	}
-	while (env->flags_env && env->path[i] && (access(env->cmd, F_OK) == -1))
-	{
-		free(env->cmd);
-		env->cmd = ft_strjoin(env->path[++i], "/");
-		env->cmd = ft_strjoin_free(env->cmd, ft_strdup(env->str_s[0]));
-	}
-	ft_exec_cmd(env);
-}
 
 void		ft_verif_env(t_env *env)
 {
@@ -123,8 +34,8 @@ void		ft_signal(int sig)
 	if (sig == SIGINT)
 	{
 		ft_putstr("\n");
-		ft_printf("{cyan}Sigabort42{eoc} {fd}1  {magenta}%s{eoc} {green}$>{eoc}",
-			  g_pwd);
+		ft_printf(
+		"{cyan}Sigabort42{eoc} {fd}1  {magenta}%s{eoc} {green}$>{eoc}", g_pwd);
 	}
 }
 
@@ -136,12 +47,14 @@ void		ft_prompt(t_env *env)
 		if (!ft_strrchr(env->env[ft_search_env(env, "PWD")], '/'))
 			g_pwd = ft_strdup(" ");
 		else
-			g_pwd = ft_strdup(ft_strrchr(env->env[ft_search_env(env, "PWD")], '/') + 1);
-		ft_printf("{cyan}Sigabort42{eoc} {fd}1  {magenta}%s{eoc} {green}$>{eoc}",
-		g_pwd);
+			g_pwd = ft_strdup(ft_strrchr(env->env[ft_search_env(env, "PWD")],
+			'/') + 1);
+		ft_printf(
+		"{cyan}Sigabort42{eoc} {fd}1  {magenta}%s{eoc} {green}$>{eoc}", g_pwd);
 	}
 	else
-		ft_printf("{cyan}Sigabort42{eoc}%s{fd}1  {green}$>{eoc}", g_pwd = ft_strdup(" "));
+		ft_printf("{cyan}Sigabort42{eoc}%s{fd}1  {green}$>{eoc}",
+		g_pwd = ft_strdup(" "));
 }
 
 void		ft_run(t_env *env)
@@ -160,7 +73,7 @@ void		ft_run(t_env *env)
 				continue;
 			ft_search_cmd(env);
 		}
- 	}
+	}
 }
 
 int			main(int argc, char **argv, char **envp)
