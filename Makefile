@@ -14,7 +14,7 @@ NAME	=	minishell
 
 CC	=	gcc
 
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror #-fsanitize=address
 
 SRCS	=	ft_set_unset_env.c \
 			ft_utils.c \

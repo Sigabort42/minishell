@@ -18,7 +18,7 @@ void			ft_exec_cd(char *path)
 
 	if (chdir(path) == -1)
 	{
-		if (access(path, F_OK))
+		if (stat(path, 0) && access(path, F_OK))
 			ft_printf("cd: {fd}2 no such file or directory: {red}%s{eoc}\n",
 			path);
 		else if (!stat(path, &s) && !S_ISDIR(s.st_mode))

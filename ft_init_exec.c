@@ -15,6 +15,7 @@
 void		ft_init_env(char **envp, t_env *env)
 {
 	int		i;
+	char		buf[100];
 
 	i = 0;
 	env->flags_env = 1;
@@ -22,8 +23,18 @@ void		ft_init_env(char **envp, t_env *env)
 		i++;
 	env->env = (char**)malloc(sizeof(char*) * (i + 1));
 	i = -1;
+	getcwd(buf, 100);
+	ft_strcat(buf, "/minishell");
 	while (envp[++i])
+	{
+		if (!ft_strncmp(envp[i], "SHELL", 5))
+		{
+			env->env[i] = ft_strdup("SHELL=");
+			env->env[i] = ft_strjoin_free(env->env[i], ft_strdup(buf));
+			i++;
+		}
 		env->env[i] = ft_strdup(envp[i]);
+	}
 	env->env[i] = 0;
 	env->path = ft_strsplit(&envp[ft_search_env(env, "PATH")][5], ':');
 }
