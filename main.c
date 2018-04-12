@@ -68,7 +68,7 @@ void		ft_run(t_env *env)
 		if (get_next_line(0, &env->cmd) > 0)
 		{
 			env->str_s = ft_strsplit(env->cmd, ' ');
-			if (env->str_s[0][0] == '.')
+			if (env->str_s[0] && env->str_s[0][0] == '.')
 			{
 				ft_free_env_tab(env->str_s);
 				free(env->cmd);
