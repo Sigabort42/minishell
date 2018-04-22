@@ -6,7 +6,7 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 16:56:13 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/03/23 02:26:37 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/04/22 16:41:35 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct			s_env
 {
 	char				**env;
 	char				**str_s;
+	char				**str_s_v;
 	char				**path;
 	char				*cmd;
 	int					flags_env;
@@ -46,11 +47,14 @@ void					ft_init_env(char **envp, t_env *env);
 void					ft_init_builtin(t_env *env);
 void					ft_free_2(t_env *env);
 void					ft_search_cmd(t_env *env);
+void					ft_verif_env(t_env *env);
+int						ft_verif_all(t_env *env);
 int						ft_exec_cmd(t_env *env);
 int						ft_search_env(t_env *env, char *av);
 int						ft_verif_builtin(t_env *env);
 int						ft_count_line_env(t_env *env);
 char					*ft_split(char *str, char c);
 char					**ft_copy_env(char **env, int i);
+
 
 #endif

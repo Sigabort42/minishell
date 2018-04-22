@@ -6,7 +6,7 @@
 #    By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/12 15:54:14 by elbenkri          #+#    #+#              #
-#    Updated: 2018/03/23 02:13:32 by elbenkri         ###   ########.fr        #
+#    Updated: 2018/04/22 16:58:39 by elbenkri         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -14,7 +14,7 @@ NAME	=	minishell
 
 CC	=	gcc
 
-CFLAGS	=	-Wall -Wextra -Werror #-fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror
 
 SRCS	=	ft_set_unset_env.c \
 			ft_utils.c \

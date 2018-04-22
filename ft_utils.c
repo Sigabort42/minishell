@@ -6,7 +6,7 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 16:51:31 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/04/22 16:11:01 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/04/22 16:39:40 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,14 @@ int				ft_verif_builtin(t_env *env)
 		ft_free_env_tab(env->str_s);
 		return (1);
 	}
+	return (0);
+}
+
+int				ft_verif_all(t_env *env)
+{
+	ft_verif_env(env);
+	if (ft_verif_builtin(env))
+		return (1);
+	ft_search_cmd(env);
 	return (0);
 }
