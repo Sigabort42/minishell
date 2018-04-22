@@ -6,7 +6,7 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 16:51:31 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/03/23 01:46:38 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/04/22 16:11:01 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ int				ft_verif_builtin(t_env *env)
 		ft_strcmp(env->builtin[i].name, env->str_s[0]))
 		i++;
 	if (!env->str_s[0])
+	{
+		ft_free_env_tab(env->str_s);
 		return (1);
+	}
 	if (env->builtin[i].name && env->str_s[0])
 	{
 		env->builtin[i].f(env);

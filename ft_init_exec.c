@@ -6,7 +6,7 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/23 02:07:09 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/03/23 02:16:37 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/04/22 14:57:41 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void		ft_init_env(char **envp, t_env *env)
 {
 	int		i;
-	char		buf[100];
+	char	buf[100];
 
 	i = 0;
 	env->flags_env = 1;
