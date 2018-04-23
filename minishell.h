@@ -23,9 +23,9 @@ typedef struct			s_env
 {
 	char				**env;
 	char				**str_s;
-	char				**str_s_v;
 	char				**path;
 	char				*cmd;
+	char				*name_prog;
 	int					flags_env;
 	struct s_builtin	*builtin;
 }						t_env;

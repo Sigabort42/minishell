@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void			ft_exec_cd(char *path)
+static void			ft_exec_cd(char *path)
 {
 	struct stat	s;
 
@@ -28,7 +28,7 @@ void			ft_exec_cd(char *path)
 	}
 }
 
-void			ft_relative_or_absolute(t_env *env)
+static void			ft_relative_or_absolute(t_env *env)
 {
 	char		*relative;
 
@@ -44,7 +44,7 @@ void			ft_relative_or_absolute(t_env *env)
 		ft_exec_cd(env->str_s[1]);
 }
 
-void			ft_cd3(t_env *env, char *path_no_env, char *old_pwd)
+static void			ft_cd3(t_env *env, char *path_no_env, char *old_pwd)
 {
 	ft_free_env_tab(env->str_s);
 	env->str_s = (char **)malloc(sizeof(char*) * 4);
@@ -57,7 +57,7 @@ void			ft_cd3(t_env *env, char *path_no_env, char *old_pwd)
 	free(path_no_env);
 }
 
-void			ft_cd2(t_env *env)
+static void			ft_cd2(t_env *env)
 {
 	char		*path_no_env;
 	char		*old_pwd;
@@ -83,7 +83,7 @@ void			ft_cd2(t_env *env)
 	ft_cd3(env, path_no_env, old_pwd);
 }
 
-void			ft_cd(t_env *env)
+void				ft_cd(t_env *env)
 {
 	char		*verif;
 	char		*verif2;
