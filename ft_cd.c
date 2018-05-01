@@ -57,7 +57,7 @@ static void			ft_cd3(t_env *env, char *path_no_env, char *old_pwd)
 	free(path_no_env);
 }
 
-static void			ft_cd2(t_env *env)
+void			ft_cd2(t_env *env)
 {
 	char		*path_no_env;
 	char		*old_pwd;
@@ -88,7 +88,7 @@ void				ft_cd(t_env *env)
 	char		*verif;
 	char		*verif2;
 
-	if (env->flags_env)
+	if (env->flags_env && ft_search_env(env, "HOME") != -1)
 	{
 		if ((!env->str_s[1] || !ft_strcmp(env->str_s[1], "--") ||
 		!ft_strcmp(env->str_s[1], "~")) && ft_search_env(env, "HOME") != -1)
@@ -108,5 +108,6 @@ void				ft_cd(t_env *env)
 		else
 			ft_relative_or_absolute(env);
 	}
-	ft_cd2(env);
+	if (ft_cd_not_env(env))
+		return ;
 }

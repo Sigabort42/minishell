@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+int		ft_cd_not_env(t_env *env)
+{
+	if (!env->flags_env)
+	{
+		ft_putendl("minishell: cd: HOME not set");
+		return (1);
+	}
+	else if (env->flags_env && ft_search_env(env, "HOME") == -1)
+	{
+		ft_putendl("minishell: cd: HOME not set");
+		return (1);
+	}
+	ft_cd2(env);
+	return (0);
+}
+
 void		ft_exit(t_env *env)
 {
 	(void)env;

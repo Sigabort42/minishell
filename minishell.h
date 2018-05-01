@@ -48,13 +48,14 @@ void					ft_init_builtin(t_env *env);
 void					ft_free_2(t_env *env);
 void					ft_search_cmd(t_env *env);
 void					ft_verif_env(t_env *env);
+void					ft_cd2(t_env *env);
 int						ft_verif_all(t_env *env);
 int						ft_exec_cmd(t_env *env);
 int						ft_search_env(t_env *env, char *av);
 int						ft_verif_builtin(t_env *env);
 int						ft_count_line_env(t_env *env);
+int						ft_cd_not_env(t_env *env);
 char					*ft_split(char *str, char c);
 char					**ft_copy_env(char **env, int i);
-
 
 #endif
