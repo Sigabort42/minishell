@@ -104,6 +104,7 @@ void				ft_cd(t_env *env)
 				verif2 = ft_strrchr(verif, '/');
 				verif2[0] = 0;
 			}
+			ft_putendl(verif);
 		}
 		else
 			ft_relative_or_absolute(env);
