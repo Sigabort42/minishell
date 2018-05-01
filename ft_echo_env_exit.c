@@ -6,13 +6,13 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/23 01:43:48 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/03/23 01:44:09 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/05/01 22:57:38 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		ft_cd_not_env(t_env *env)
+int			ft_cd_not_env(t_env *env)
 {
 	if (!env->flags_env)
 	{

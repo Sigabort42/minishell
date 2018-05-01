@@ -6,7 +6,7 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 16:51:10 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/03/23 01:43:24 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/05/01 22:58:42 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void			ft_cd3(t_env *env, char *path_no_env, char *old_pwd)
 	free(path_no_env);
 }
 
-void			ft_cd2(t_env *env)
+void				ft_cd2(t_env *env)
 {
 	char		*path_no_env;
 	char		*old_pwd;
@@ -65,6 +65,8 @@ void			ft_cd2(t_env *env)
 	path_no_env = ft_strnew(100);
 	if (env->flags_env && ft_search_env(env, "PWD") != -1)
 		old_pwd = ft_strdup(&(env)->env[ft_search_env(env, "PWD")][4]);
+	else if (ft_search_env(env, "PWD") == -1)
+		old_pwd = ft_strdup("/");
 	if (!env->flags_env)
 	{
 		getcwd(path_no_env, 100);
@@ -109,6 +111,5 @@ void				ft_cd(t_env *env)
 		else
 			ft_relative_or_absolute(env);
 	}
-	if (ft_cd_not_env(env))
-		return ;
+	ft_cd_not_env(env);
 }

@@ -6,7 +6,7 @@
 /*   By: elbenkri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 15:54:34 by elbenkri          #+#    #+#             */
-/*   Updated: 2018/04/22 16:39:53 by elbenkri         ###   ########.fr       */
+/*   Updated: 2018/05/01 23:07:48 by elbenkri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,15 @@ void		ft_run(t_env *env)
 
 	if (signal(SIGINT, ft_signal) == SIG_ERR)
 		;
-	g_pwd = ft_strdup(" ");
 	while (42)
 	{
 		ft_prompt(env);
 		if (get_next_line(0, &env->cmd) > 0)
 		{
-			env->str_s = ft_strsplit(trim = ft_strtrim(env->cmd), ' ');
+			trim = ft_strtrim(env->cmd);
+			env->str_s = ft_strsplit(trim, ' ');
 			free(trim);
-			if (env->str_s[0] && env->str_s[0][0] == '.'  &&
+			if (env->str_s[0] && env->str_s[0][0] == '.' &&
 			ft_strcmp(env->str_s[0], env->name_prog))
 			{
 				ft_free_env_tab(env->str_s);
@@ -102,6 +102,7 @@ int			main(int argc, char **argv, char **envp)
 		env.path[0] = 0;
 	}
 	ft_init_builtin(&env);
+	g_pwd = ft_strdup(" ");
 	ft_run(&env);
 	return (0);
 }
